@@ -21,6 +21,7 @@ The PowerShell script performs the following actions (Source links are colored i
 
 
 How it works:
+
 The script first determines the current Central Time timestamp using FindSystemTimeZoneById("Central Standard Time") and converting from UTC (TimeZoneInfo.ConvertTimeFromUtc(DateTime, TimeZoneInfo) Method (System) | Microsoft Learn). Then it calls query user to list all logged-in users; this command returns all active user sessions on the system (windows - Powershell Get Active logged in user in local machine - Super User). It parses the output to extract usernames and joins them into a single comma-separated string. Next, it composes an email using the Outlook COM interface – this leverages an installed Outlook client to send the email (Send mail to Myself using Powershell - Stack Overflow). The email’s body contains the timestamp and user list. If the email step fails (for example, if Outlook is not available or no email profile is configured), the script logs the output line to a text file (C:\Logs\LoggedInUsers.log).
 Note: The script uses Outlook automation for emailing. 
 This requires Microsoft Outlook to be installed and configured on the system (with a default mail profile). If you prefer sending via SMTP without Outlook, you could replace that section with the Send-MailMessage cmdlet and appropriate SMTP server settings. For instance, using Send-MailMessage -SmtpServer "your.smtp.server" -To "sampleemail@sample.com" -From "[email protected]" -Subject "..." -Body "..." if an SMTP server is available.
